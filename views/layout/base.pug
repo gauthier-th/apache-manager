@@ -1,0 +1,24 @@
+- var siteTitle = "Apache Manager"
+
+- var displayHeader = true
+- var displayFooter = true
+- var description = "Welcome on the Apache Manager!"
+
+block init
+
+doctype html
+html
+	head
+		include head.pug
+		block head
+
+	body
+		if (displayHeader)
+			include header.pug
+		block header
+
+		block content
+
+		if (displayFooter)
+			include footer.pug
+		block footer

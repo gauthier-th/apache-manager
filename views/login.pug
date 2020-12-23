@@ -1,0 +1,27 @@
+extends layout/base
+
+block init
+	- var title = 'Connection'
+
+block head
+	link(rel='stylesheet' type='text/css' href='/css/login.css')
+
+block content
+	.ui.middle.aligned.center.aligned.grid
+		.column
+			h1.ui.blue.header.huge Apache Manager
+			h2.ui.blue.image.header
+				i.sign-in.icon
+				.content Login
+			form.ui.large.form
+				.ui.stacked.segment
+					.field
+						.ui.left.icon.input
+							i.user.icon
+							input(type='text' name='email' placeholder='E-mail address')
+					.field
+						.ui.left.icon.input
+							i.lock.icon
+							input(type='password' name='password' placeholder='Password')
+					.ui.fluid.large.blue.submit.button Login
+				.ui.error.message
