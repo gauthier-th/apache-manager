@@ -4,24 +4,67 @@ block init
 	- var title = 'Connection'
 
 block head
-	link(rel='stylesheet' type='text/css' href='/css/login.css')
+	style.
+		body {
+			background-color: #DADADA;
+			background-image: url(/src/background-cloud.jpg);
+			background-size: cover;
+			background-position: center;
+		}
+		body > .grid {
+			height: 100%;
+		}
+		.image {
+			margin-top: -100px;
+		}
+		.column {
+			max-width: 450px;
+		}
+	script.
+		$(document).ready(function() {
+			$('.ui.form').form({
+				fields: {
+					username: {
+						identifier: 'username',
+						rules: [
+							{
+								type: 'empty',
+								prompt: 'Please enter username'
+							}
+						]
+					},
+					password: {
+						identifier: 'password',
+						rules: [
+							{
+								type: 'empty',
+								prompt: 'Please enter your password'
+							}
+						]
+					}
+				}
+			});
+		});
 
 block content
 	.ui.middle.aligned.center.aligned.grid
 		.column
-			h1.ui.blue.header.huge Apache Manager
-			h2.ui.blue.image.header
-				i.sign-in.icon
-				.content Login
-			form.ui.large.form
+			h1.ui.violet.header.huge Apache Manager
+			form.ui.large.form(action='#' method='post' class=(error ? 'error' : ''))
 				.ui.stacked.segment
+					h2.ui.violet.image.header
+						i.sign-in.icon
+						.content Login
 					.field
 						.ui.left.icon.input
 							i.user.icon
-							input(type='text' name='email' placeholder='E-mail address')
+							input(type='text' name='username' placeholder='Username')
 					.field
 						.ui.left.icon.input
 							i.lock.icon
 							input(type='password' name='password' placeholder='Password')
-					.ui.fluid.large.blue.submit.button Login
+					.ui.fluid.large.violet.submit.button Login
 				.ui.error.message
+					if error
+						ul.list
+							li= error
