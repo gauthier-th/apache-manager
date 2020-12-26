@@ -6,7 +6,7 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const apacheApi = require('apache-api');
+const apacheApi = require('apache-api')(process.env.APACHE_PATH || '/etc/apache2');
 
 const authMiddleware = require('./authMiddleware');
 
@@ -69,8 +69,32 @@ app.post('/', async (req, res) => {
 app.get('/configs', (req, res) => {
 	res.render('configs');
 });
-app.get('/mods', (req, res) => {
-	res.render('mods');
+app.get('/mods', async (req, res) => {
+	const [availableMods, enabledMods] = await Promise.all([
+		apacheApi.mods.listAvailable(),
+		apacheApi.mods.listEnabled()
+	]);
+	res.render('mods',{ availableMods, enabledMods });
+});
+app.post('/mods', async (req, res) => {
+	if ('enable' in req.body && 'mod' in req.body) {
+		await apacheApi.mods.enable(req.body.mod);
+		const [availableMods, enabledMods] = await Promise.all([
+			apacheApi.mods.listAvailable(),
+			apacheApi.mods.listEnabled()
+		]);
+		res.render('mods', { availableMods, enabledMods, enabled: req.body.mod });
+	}
+	else if ('disable' in req.body && 'mod' in req.body) {
+		await apacheApi.mods.disable(req.body.mod);
+		const [availableMods, enabledMods] = await Promise.all([
+			apacheApi.mods.listAvailable(),
+			apacheApi.mods.listEnabled()
+		]);
+		res.render('mods', { availableMods, enabledMods, disabled: req.body.mod });
+	}
+	else
+		res.render('mods');
 });
 app.get('/login', (req, res) => {
 	res.render('login');

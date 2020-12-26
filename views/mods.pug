@@ -10,7 +10,14 @@ block head
 			background-image: url(/src/background-cloud.jpg);
 			background-size: cover;
 			background-position: center;
+			background-attachment: fixed;
 		}
+	script.
+		$(document).ready(function() {
+			$('.message .close').on('click', function() {
+				$(this).closest('.message').transition('fade');
+			});
+		});
 
 block content
 	.ui.container
@@ -20,3 +27,31 @@ block content
 			a.item.active(href="/mods") Mods
 		.ui.segment
 			h1 Mods
+			if enabled
+				.ui.success.message
+					i.close.icon
+					.header Success
+					p Mod #{enabled} has been enabled on the Apache server.
+			if disabled
+				.ui.success.message
+					i.close.icon
+					.header Success
+					p Mod #{disabled} has been disabled on the Apache server.
+			table.ui.celled.table
+				thead
+					tr
+						th Mod name
+						th Actions
+				tbody
+					each mod in availableMods
+						tr
+							td(data-label='Mod name')= mod
+							td(data-label='Actions')
+								form.ui.form(action='#' method='post')
+									input(type='hidden' name='mod' value=mod)
+									if enabledMods.includes(mod)
+										input(type='hidden' name='disable')
+										button.ui.negative.button.submit Disable
+									else
+										input(type='hidden' name='enable')
+										button.ui.positive.button.submit Enable

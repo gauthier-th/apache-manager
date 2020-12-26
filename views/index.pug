@@ -12,6 +12,12 @@ block head
 			background-position: center;
 			background-attachment: fixed;
 		}
+	script.
+		$(document).ready(function() {
+			$('.message .close').on('click', function() {
+				$(this).closest('.message').transition('fade');
+			});
+		});
 
 block content
 	.ui.container
@@ -24,17 +30,17 @@ block content
 			if restart
 				.ui.success.message
 					i.close.icon
-						.header Success
+					.header Success
 					p Apache server has restarted successfully.
 			if start
 				.ui.success.message
 					i.close.icon
-						.header Success
+					.header Success
 					p Apache server has start successfully.
 			if stop
 				.ui.success.message
 					i.close.icon
-						.header Success
+					.header Success
 					p Apache server has stoped successfully.
 			h3.ui.violet.header Restart Apache
 			form.ui.form(action='#' method='post')
