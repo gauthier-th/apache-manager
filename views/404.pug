@@ -1,0 +1,27 @@
+extends layout/base
+
+block init
+	- var title = 'Error 404'
+
+block head
+	style.
+		body {
+			background-color: #DADADA;
+			background-image: url(/src/background-cloud.jpg);
+			background-size: cover;
+			background-position: center;
+		}
+		body > .grid {
+			height: 100%;
+		}
+		.column {
+			max-width: 450px;
+		}
+
+block content
+	.ui.middle.aligned.center.aligned.grid
+		.column
+			.ui.large.form
+				.ui.stacked.segment
+					h1.ui.violet.header.huge Error 404
+					h2.ui.violet.header This page does not exists
