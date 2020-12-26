@@ -6,6 +6,7 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const apacheApi = require('apache-api');
 
 const authMiddleware = require('./authMiddleware');
 
@@ -43,6 +44,27 @@ app.use(authMiddleware);
 
 app.get('/', (req, res) => {
 	res.render('index');
+});
+app.post('/', async (req, res) => {
+	if ('restart' in req.body) {
+		await apacheApi.actions.restartApache();
+		res.render('index', { restart: true });
+	}
+	else if ('start' in req.body) {
+		await apacheApi.actions.startApache();
+		res.render('index', { start: true });
+	}
+	else if ('stop' in req.body) {
+		await apacheApi.actions.stopApache();
+		res.render('index', { stop: true });
+	}
+	else if ('status' in req.body) {
+		const status = await apacheApi.actions.statusApache();
+		console.log(status);
+		res.render('index', { status });
+	}
+	else
+		res.render('index');
 });
 app.get('/configs', (req, res) => {
 	res.render('configs');

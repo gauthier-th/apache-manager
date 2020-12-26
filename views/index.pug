@@ -10,6 +10,7 @@ block head
 			background-image: url(/src/background-cloud.jpg);
 			background-size: cover;
 			background-position: center;
+			background-attachment: fixed;
 		}
 
 block content
@@ -20,3 +21,38 @@ block content
 			a.item(href="/mods") Mods
 		.ui.segment
 			h1 Actions
+			if restart
+				.ui.success.message
+					i.close.icon
+						.header Success
+					p Apache server has restarted successfully.
+			if start
+				.ui.success.message
+					i.close.icon
+						.header Success
+					p Apache server has start successfully.
+			if stop
+				.ui.success.message
+					i.close.icon
+						.header Success
+					p Apache server has stoped successfully.
+			h3.ui.violet.header Restart Apache
+			form.ui.form(action='#' method='post')
+				input(type='hidden' name='restart')
+				button.ui.orange.button.submit Restart
+			h3.ui.violet.header Start Apache
+			form.ui.form(action='#' method='post')
+				input(type='hidden' name='start')
+				button.ui.positive.button.submit Start
+			h3.ui.violet.header Stop Apache
+			form.ui.form(action='#' method='post')
+				input(type='hidden' name='stop')
+				button.ui.negative.button.submit Stop
+			h3.ui.violet.header Apache Status
+			form.ui.form(action='#' method='post')
+				input(type='hidden' name='status')
+				button.ui.primary.button.submit Status
+				if status
+					.ui.raised.segment
+						p
+							pre= status
