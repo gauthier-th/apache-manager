@@ -44,6 +44,12 @@ app.use(authMiddleware);
 app.get('/', (req, res) => {
 	res.render('index');
 });
+app.get('/configs', (req, res) => {
+	res.render('configs');
+});
+app.get('/mods', (req, res) => {
+	res.render('mods');
+});
 app.get('/login', (req, res) => {
 	res.render('login');
 });
