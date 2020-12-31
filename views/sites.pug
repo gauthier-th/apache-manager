@@ -23,42 +23,42 @@ block content
 	.ui.container
 		.ui.pointing.menu
 			a.item(href="/") Actions
-			a.item.active(href="/configs") Configs
+			a.item(href="/configs") Configs
 			a.item(href="/mods") Mods
-			a.item(href="/sites") Sites
+			a.item.active(href="/sites") Sites
 		.ui.segment
-			h1 Configs
+			h1 Sites
 			if enabled
 				.ui.success.message
 					i.close.icon
 					.header Success
-					p Config #{enabled} has been enabled on the Apache server.
+					p Site #{enabled} has been enabled on the Apache server.
 						br
 						| You need to restart the Apache server.
 			if disabled
 				.ui.success.message
 					i.close.icon
 					.header Success
-					p Config #{disabled} has been disabled on the Apache server.
+					p Site #{disabled} has been disabled on the Apache server.
 						br
 						| You need to restart the Apache server.
 			table.ui.celled.table
 				thead
 					tr
-						th Config name
+						th Site name
 						th Actions
 				tbody
-					each config in availableConfigs
+					each site in availableSites
 						tr
-							td(data-label='Config name')= config
+							td(data-label='Site name')= site
 							td(data-label='Actions')
 								form.ui.form(action='#' method='post')
-									input(type='hidden' name='config' value=config)
-									if enabledConfigs.includes(config)
+									input(type='hidden' name='site' value=site)
+									if enabledSites.includes(site)
 										input(type='hidden' name='disable')
 										button.ui.negative.button.submit Disable
 									else
 										input(type='hidden' name='enable')
 										button.ui.positive.button.submit Enable
-									a(href="/configs/" + config)
+									a(href="/sites/" + site)
 										button.ui.primary.button(type='button') Manage

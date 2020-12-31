@@ -66,6 +66,7 @@ app.post('/', async (req, res) => {
 	else
 		res.render('index');
 });
+
 app.get('/configs', async (req, res) => {
 	const [availableConfigs, enabledConfigs] = await Promise.all([
 		apacheApi.configs.listAvailable(),
@@ -93,6 +94,7 @@ app.post('/configs', async (req, res) => {
 	else
 		res.render('configs');
 });
+
 app.get('/mods', async (req, res) => {
 	const [availableMods, enabledMods] = await Promise.all([
 		apacheApi.mods.listAvailable(),
@@ -120,6 +122,35 @@ app.post('/mods', async (req, res) => {
 	else
 		res.render('mods');
 });
+
+app.get('/sites', async (req, res) => {
+	const [availableSites, enabledSites] = await Promise.all([
+		apacheApi.configs.listAvailable(true),
+		apacheApi.configs.listEnabled(true)
+	]);
+	res.render('sites',{ availableSites, enabledSites });
+});
+app.post('/sites', async (req, res) => {
+	if ('enable' in req.body && 'site' in req.body) {
+		await apacheApi.configs.enable(req.body.site, true);
+		const [availableSites, enabledSites] = await Promise.all([
+			apacheApi.configs.listAvailable(true),
+			apacheApi.configs.listEnabled(true)
+		]);
+		res.render('sites', { availableSites, enabledSites, enabled: req.body.site });
+	}
+	else if ('disable' in req.body && 'site' in req.body) {
+		await apacheApi.configs.disable(req.body.site, true);
+		const [availableSites, enabledSites] = await Promise.all([
+			apacheApi.configs.listAvailable(true),
+			apacheApi.configs.listEnabled(true)
+		]);
+		res.render('sites', { availableSites, enabledSites, disabled: req.body.site });
+	}
+	else
+		res.render('sites');
+});
+
 app.get('/login', (req, res) => {
 	res.render('login');
 });
