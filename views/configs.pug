@@ -12,6 +12,12 @@ block head
 			background-position: center;
 			background-attachment: fixed;
 		}
+	script.
+		$(document).ready(function() {
+			$('.message .close').on('click', function() {
+				$(this).closest('.message').transition('fade');
+			});
+		});
 
 block content
 	.ui.container
@@ -21,3 +27,37 @@ block content
 			a.item(href="/mods") Mods
 		.ui.segment
 			h1 Configs
+			if enabled
+				.ui.success.message
+					i.close.icon
+					.header Success
+					p Config #{enabled} has been enabled on the Apache server.
+						br
+						| You need to restart the Apache server.
+			if disabled
+				.ui.success.message
+					i.close.icon
+					.header Success
+					p Config #{disabled} has been disabled on the Apache server.
+						br
+						| You need to restart the Apache server.
+			table.ui.celled.table
+				thead
+					tr
+						th Config name
+						th Actions
+				tbody
+					each config in availableConfigs
+						tr
+							td(data-label='Config name')= config
+							td(data-label='Actions')
+								form.ui.form(action='#' method='post')
+									input(type='hidden' name='config' value=config)
+									if enabledConfigs.includes(config)
+										input(type='hidden' name='disable')
+										button.ui.negative.button.submit Disable
+									else
+										input(type='hidden' name='enable')
+										button.ui.positive.button.submit Enable
+									a(href="/configs/" + config)
+										button.ui.primary.button(type='button') Manage

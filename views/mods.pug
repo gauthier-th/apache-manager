@@ -32,11 +32,15 @@ block content
 					i.close.icon
 					.header Success
 					p Mod #{enabled} has been enabled on the Apache server.
+						br
+						| You need to restart the Apache server.
 			if disabled
 				.ui.success.message
 					i.close.icon
 					.header Success
 					p Mod #{disabled} has been disabled on the Apache server.
+						br
+						| You need to restart the Apache server.
 			table.ui.celled.table
 				thead
 					tr

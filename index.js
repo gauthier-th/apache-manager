@@ -66,8 +66,32 @@ app.post('/', async (req, res) => {
 	else
 		res.render('index');
 });
-app.get('/configs', (req, res) => {
-	res.render('configs');
+app.get('/configs', async (req, res) => {
+	const [availableConfigs, enabledConfigs] = await Promise.all([
+		apacheApi.configs.listAvailable(),
+		apacheApi.configs.listEnabled()
+	]);
+	res.render('configs',{ availableConfigs, enabledConfigs });
+});
+app.post('/configs', async (req, res) => {
+	if ('enable' in req.body && 'config' in req.body) {
+		await apacheApi.configs.enable(req.body.config);
+		const [availableConfigs, enabledConfigs] = await Promise.all([
+			apacheApi.configs.listAvailable(),
+			apacheApi.configs.listEnabled()
+		]);
+		res.render('configs', { availableConfigs, enabledConfigs, enabled: req.body.config });
+	}
+	else if ('disable' in req.body && 'config' in req.body) {
+		await apacheApi.configs.disable(req.body.config);
+		const [availableConfigs, enabledConfigs] = await Promise.all([
+			apacheApi.configs.listAvailable(),
+			apacheApi.configs.listEnabled()
+		]);
+		res.render('configs', { availableConfigs, enabledConfigs, disabled: req.body.config });
+	}
+	else
+		res.render('configs');
 });
 app.get('/mods', async (req, res) => {
 	const [availableMods, enabledMods] = await Promise.all([
