@@ -1,0 +1,50 @@
+extends layout/base
+
+block init
+	- var title = 'Apache Manager'
+
+block head
+	link(rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.1/codemirror.min.css')
+	style.
+		body {
+			background-color: #DADADA;
+			background-image: url(/src/background-cloud.jpg);
+			background-size: cover;
+			background-position: center;
+			background-attachment: fixed;
+		}
+		.CodeMirror {
+			border: 1px solid #eee;
+			height: auto;
+		}
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.1/codemirror.min.js')
+	script(src='/node_modules/codemirror-mode-apache/apache.js')
+	script.
+		$(document).ready(function() {
+			$('.message .close').on('click', function() {
+				$(this).closest('.message').transition('fade');
+			});
+			var editor = CodeMirror.fromTextArea(document.getElementById('config-code'), {
+				lineNumbers: true,
+				mode: 'apache',
+				viewportMargin: Infinity
+			});
+		});
+
+block content
+	.ui.container
+		.ui.pointing.menu
+			a.item(href="/") Actions
+			a.item.active(href="/configs") Configs
+			a.item(href="/mods") Mods
+			a.item(href="/sites") Sites
+		.ui.segment(style='min-height: calc(100vh - 2em - 42px);')
+			h1 Config #{configName}
+			if saved
+				.ui.success.message
+					i.close.icon
+					.header Success
+					p Config #{configName} has been saved on the Apache server.
+						br
+						| You need to restart the Apache server.
+			textarea#config-code= configContent

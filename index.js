@@ -24,7 +24,7 @@ catch (e) {
 app.use(helmet({ contentSecurityPolicy: false }));
 app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('semantic', express.static(path.join(__dirname, 'node_modules')));
+app.use('/node_modules/codemirror-mode-apache', express.static(path.join(__dirname, '/node_modules/codemirror-mode-apache')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -93,6 +93,15 @@ app.post('/configs', async (req, res) => {
 	}
 	else
 		res.render('configs');
+});
+app.get('/configs/:name', async (req, res) => {
+	const name = req.params.name;
+	const config = await apacheApi.configs.readConfig(name, false, false);
+	// const parsed = apacheApi.parser.parse(config);
+	res.render('config', {
+		configName: name,
+		configContent: config
+	});
 });
 
 app.get('/mods', async (req, res) => {
