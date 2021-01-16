@@ -60,7 +60,6 @@ app.post('/', async (req, res) => {
 	}
 	else if ('status' in req.body) {
 		const status = await apacheApi.actions.statusApache();
-		console.log(status);
 		res.render('index', { status });
 	}
 	else
@@ -97,7 +96,6 @@ app.post('/configs', async (req, res) => {
 app.get('/configs/:name', async (req, res) => {
 	const name = req.params.name;
 	const config = await apacheApi.configs.readConfig(name, false, false);
-	// const parsed = apacheApi.parser.parse(config);
 	res.render('config', {
 		configName: name,
 		configContent: config
@@ -106,14 +104,16 @@ app.get('/configs/:name', async (req, res) => {
 app.post('/configs/:name', async (req, res) => {
 	const name = req.params.name;
 	let config = await apacheApi.configs.readConfig(name, false, false);
+	let saved = false;
 	if (req.body['config-code']) {
-		console.log(req.body['config-code']);
 		config = req.body['config-code'];
 		await apacheApi.configs.saveConfig(name, config, false, false);
+		saved = true;
 	}
 	res.render('config', {
 		configName: name,
-		configContent: config
+		configContent: config,
+		saved
 	});
 });
 
@@ -171,6 +171,29 @@ app.post('/sites', async (req, res) => {
 	}
 	else
 		res.render('sites');
+});
+app.get('/sites/:name', async (req, res) => {
+	const name = req.params.name;
+	const site = await apacheApi.configs.readConfig(name, true, false);
+	res.render('site', {
+		siteName: name,
+		siteContent: site
+	});
+});
+app.post('/sites/:name', async (req, res) => {
+	const name = req.params.name;
+	let site = await apacheApi.configs.readConfig(name, true, false);
+	let saved = false;
+	if (req.body['site-code']) {
+		site = req.body['site-code'];
+		await apacheApi.configs.saveConfig(name, site, true, false);
+		saved = true;
+	}
+	res.render('site', {
+		siteName: name,
+		siteContent: site,
+		saved
+	});
 });
 
 app.get('/login', (req, res) => {

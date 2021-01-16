@@ -24,7 +24,7 @@ block head
 			$('.message .close').on('click', function() {
 				$(this).closest('.message').transition('fade');
 			});
-			var editor = CodeMirror.fromTextArea(document.getElementById('config-code'), {
+			var editor = CodeMirror.fromTextArea(document.getElementById('site-code'), {
 				lineNumbers: true,
 				mode: 'apache',
 				viewportMargin: Infinity
@@ -45,19 +45,19 @@ block content
 	.ui.container
 		.ui.pointing.menu
 			a.item(href="/") Actions
-			a.item.active(href="/configs") Configs
+			a.item(href="/configs") Configs
 			a.item(href="/mods") Mods
-			a.item(href="/sites") Sites
+			a.item.active(href="/sites") Sites
 		.ui.segment(style="min-height: calc(100vh - 2em - 42px);")
-			h1 Config #{configName}
+			h1 Site #{siteName}
 			if saved
 				.ui.success.message
 					i.close.icon
 					.header Success
-					p Config #{configName} has been saved on the Apache server.
+					p Site #{siteName} has been saved on the Apache server.
 						br
 						| You need to restart the Apache server.
 			form(method="post" action="#")
-				textarea#config-code(name="config-code")= configContent
+				textarea#site-code(name="site-code")= siteContent
 				div(style="text-align: right;")
 					button.ui.positive.button.submit(onclick='window.hasChanged = false;') Save
