@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/gauthier-th/apache-manager#readme",
   "dependencies": {
-    "apache-api": "^1.2.3",
+    "apache-api": "^1.2.5",
     "body-parser": "^1.19.0",
     "codemirror-mode-apache": "^1.0.1",
     "dotenv": "^8.2.0",

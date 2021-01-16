@@ -103,6 +103,19 @@ app.get('/configs/:name', async (req, res) => {
 		configContent: config
 	});
 });
+app.post('/configs/:name', async (req, res) => {
+	const name = req.params.name;
+	let config = await apacheApi.configs.readConfig(name, false, false);
+	if (req.body['config-code']) {
+		console.log(req.body['config-code']);
+		config = req.body['config-code'];
+		await apacheApi.configs.saveConfig(name, config, false, false);
+	}
+	res.render('config', {
+		configName: name,
+		configContent: config
+	});
+});
 
 app.get('/mods', async (req, res) => {
 	const [availableMods, enabledMods] = await Promise.all([

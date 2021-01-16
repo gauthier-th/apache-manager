@@ -29,6 +29,9 @@ block head
 				mode: 'apache',
 				viewportMargin: Infinity
 			});
+			editor.on('change', function() {
+				console.log('change !');
+			});
 		});
 
 block content
@@ -38,7 +41,7 @@ block content
 			a.item.active(href="/configs") Configs
 			a.item(href="/mods") Mods
 			a.item(href="/sites") Sites
-		.ui.segment(style='min-height: calc(100vh - 2em - 42px);')
+		.ui.segment(style="min-height: calc(100vh - 2em - 42px);")
 			h1 Config #{configName}
 			if saved
 				.ui.success.message
@@ -47,4 +50,7 @@ block content
 					p Config #{configName} has been saved on the Apache server.
 						br
 						| You need to restart the Apache server.
-			textarea#config-code= configContent
+			form(method="post" action="#")
+				textarea#config-code(name="config-code")= configContent
+				div(style="text-align: right;")
+					button.ui.positive.button.submit Save
